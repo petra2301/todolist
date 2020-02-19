@@ -1,12 +1,11 @@
 "use strict";
-//cors key: 5d9093301ce70f6379855131
+//cors key: 	5d9093301ce70f6379855131
 //link https://todolist2019-e565.restdb.io/rest/addtaskform
 
 const addForm = document.querySelector("form#addForm");
 const addTaskBtn = document.querySelector(".addTaskBtn");
 const editForm = document.querySelector("form#editForm");
 const modal = document.querySelector(".modal");
-const loader = document.querySelector(".loader");
 
 document.addEventListener("DOMContentLoaded", function() {
   get();
@@ -55,7 +54,8 @@ function post() {
     const data = {
       task: addForm.elements.task.value,
       when: addForm.elements.when.value,
-      notes: addForm.elements.notes.value
+      notes: addForm.elements.notes.value,
+      done: addForm.elements.done.value,
     };
   
     const postData = JSON.stringify(data);
@@ -168,22 +168,25 @@ function addTask(task) {
     clone.querySelector("h2").textContent = task.task;
     clone.querySelector(".taskDate").textContent = task.when;
     clone.querySelector(".taskNotes").textContent = task.notes;
+    clone.querySelector(`input[type="number"]`).value = task.done;
   
-    clone.querySelector("button.deleteBtn").addEventListener("click", () => {
+    clone.querySelector(".deleteBtn").addEventListener("click", () => {
       deleteTaskAnimation(task._id);
     });
   
-    clone.querySelector("button.editBtn").addEventListener("click", e => {
+    clone.querySelector(".editBtn").addEventListener("click", e => {
         editTask(task._id);
     });
 
-    clone.querySelector("button.doneBtn").addEventListener("click", () => {
-        makeDone(task._id);
-    });
-
-    clone.querySelector("button.notDoneBtn").addEventListener("click", () => {
-        makeNotDone(task._id);
-    })
+    clone.querySelector("#toggleStatusBtn").addEventListener("click", () => {
+      changeStatus(task._id);
+  });
+ 
+  if (task.done === 1) {
+    clone.querySelector(`article[data-task-id="${task._id}"]`).classList.add("done");
+    clone.querySelector("#toggleStatusBtn").classList.remove("doneBtn");
+    clone.querySelector("#toggleStatusBtn").classList.add("notDoneBtn");
+  }
 
     document.querySelector("main").prepend(clone);
   }
@@ -196,32 +199,38 @@ function showToast() {
     }, 4000);
 }
 
-function closeStartScreen() {
-    const startScreen = document.querySelector(".startScreen");
-    startScreen.querySelector("h1").classList.add("shrinkHeader");
-    startScreen.querySelector("p").classList.add("shrinkText");
-    startScreen.classList.add("shrinkStartScreen");
-    startScreen.addEventListener("animationend", ()=> {
-        startScreen.classList.add("hide");
-        document.querySelector("main").classList.remove("hide");
-        document.querySelector(".gradientBottom").classList.remove("hide");
-        document.querySelector("#yourTasks").classList.remove("hide");
-        document.querySelector(".header").classList.remove("hide");
-    })
-}
+function changeStatus(id) {
+  const parentElement = document.querySelector(`article[data-task-id="${id}"]`);
 
-function makeDone(id) {
-    const parentElement = document.querySelector(`article[data-task-id="${id}"]`);
-    document.querySelector(`article[data-task-id="${id}"]`).classList.add("done");
-    
-    parentElement.querySelector(".doneBtn").classList.add("hide");
-    parentElement.querySelector(".notDoneBtn").classList.remove("hide");
-}
+  //toggle visuals first to avoid lag
+  document.querySelector(`article[data-task-id="${id}"]`).classList.toggle("done");
+  parentElement.querySelector("#toggleStatusBtn").classList.toggle("doneBtn");
+  parentElement.querySelector("#toggleStatusBtn").classList.toggle("notDoneBtn");
 
-function makeNotDone(id) {
-    const parentElement = document.querySelector(`article[data-task-id="${id}"]`);
-    document.querySelector(`article[data-task-id="${id}"]`).classList.remove("done");
-    
-    parentElement.querySelector(".doneBtn").classList.remove("hide");
-    parentElement.querySelector(".notDoneBtn").classList.add("hide");
+  //actually update the db
+    if (parentElement.querySelector(`input[type="number"`).value === "1") {
+    parentElement.querySelector(`input[type="number"`).value = "2";
+  } else {
+    parentElement.querySelector(`input[type="number"`).value = "1";
+  };
+
+  let data = {
+        done: parentElement.querySelector(`input[type="number"`).value
+        
+  };
+
+  let postData = JSON.stringify(data);
+console.log("https://todolist2019-e565.restdb.io/rest/addtaskform/" + id);
+  fetch("https://todolist2019-e565.restdb.io/rest/addtaskform/" + id,
+    {
+        method: "put",
+        headers: {
+            "Content-Type": "application/json; charset=utf-8",
+            "x-apikey": "5d9093301ce70f6379855131",
+            "cache-control": "no-cache"
+        },
+        body: postData
+    }
+)
+.then(d => d.json());
 }

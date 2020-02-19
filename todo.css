@@ -10,19 +10,6 @@ body {
     background-color: #efefef;
 }
 
-.fadeIn {
-    animation: fadeIn 1s forwards;
-}
-
-@keyframes fadeIn {
-    0% {
-        opacity: 0
-    }
-    100% {
-        opacity: 1;
-    }
-}
-
 .gradientBottom {
     height: 100px;
     width: 100%;
@@ -73,18 +60,6 @@ input::placeholder, textarea::placeholder {
     font-family: "Mansalva", sans-serif;
 }
 
-button[type="submit"] {
-    background-color: #FA983A;
-    color: white;
-    border: none;
-    padding: 10px 30px;
-    font-size: 1em;
-    font-weight: 600;
-    font-family: "Nunito", sans-serif;
-    margin: 20px auto;
-    cursor: pointer;
-}
-
 .toast {
     background-color: green;
     color: white;
@@ -128,6 +103,8 @@ main {
     margin: 0 auto 100px auto;
 }
 
+/* --- tasks --- */
+
 .taskDate, .taskDateP {
     color: #808080;
 }
@@ -146,6 +123,8 @@ article > h2 {
 article > p {
     color: #1d1d1d;
 }
+
+/* --- icons for actions --- */
 
 .editBtn {
     background: url(img/edit.png);
@@ -179,6 +158,10 @@ article > p {
     background-color: #fa983a;
 }
 
+.notDoneBtn:hover {
+    background-color: #faa556;
+}
+
 .editBtn, .doneBtn, .deleteBtn, .notDoneBtn {
     width: 50px;
     height: 50px;
@@ -190,6 +173,20 @@ article > p {
     background-position: 50% 50%;
     transition: 0.3s ease-in-out;
 }
+
+.addTaskBtn, .editTaskBtn {
+    background-color: #FA983A;
+    color: white;
+    border: none;
+    padding: 10px 30px;
+    font-size: 1em;
+    font-weight: 600;
+    font-family: "Nunito", sans-serif;
+    margin: 20px auto;
+    cursor: pointer;
+}
+
+/* --- modal-specific styling --- */
 
 .modal {
     width: 100%;
@@ -240,6 +237,7 @@ article > p {
     cursor: pointer;
 } 
 
+/* --- general commands --- */
 .hide {
     display: none;
 }
@@ -260,6 +258,8 @@ article > p {
     opacity: 0;
 }
 }
+
+/* --- media queries --- */
 
 @media all and (min-width: 500px) {
 form {
@@ -286,13 +286,12 @@ textarea[name="notes"], label[for="notes"] {
     grid-column: 1 / span 2;
 }
 
-button[type="submit"] {
+.addTaskBtn, .editTaskBtn {
     grid-row: 3;
     grid-column: 2;
     width: 100%;
 }
 }
-
 @media all and (max-width: 800px) {
     main {
         grid-template-columns: 1fr 1fr;

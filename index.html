@@ -18,6 +18,7 @@
         <input type="text" name="when" placeholder="Today / In the afternoon / 2019. 09. 31." required><br>
         <label for="notes"><strong>Notes (optional):</strong></label><br>
         <textarea name="notes" placeholder="Remember to take documents with you"></textarea>
+        <input type="number" name="done" value="2" class="hide">
         <button type="submit" class="addTaskBtn">Add task</button>
     </form>
     <div class="modal hide">
@@ -44,11 +45,12 @@
     <template>
         <article>
             <h2>Task name</h2>
-            <p class="taskDateP">On <span class="taskDate">Task date</span></p>
+            <p class="taskDateP"><span class="taskDate">Task date</span></p>
             <p class="taskNotes">Task notes</p>
+            <input type="hidden" name="id">
+            <input type="number" name="done" class="hide">
             <button class="editBtn"></button>
-            <button class="doneBtn"></button>
-            <button class="notDoneBtn hide"></button>
+            <button type="submit" class="doneBtn" id="toggleStatusBtn"></button>
             <button class="deleteBtn"></button>
         </article>
     </template>
