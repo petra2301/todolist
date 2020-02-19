@@ -2,13 +2,15 @@
 //cors key: 5d9093301ce70f6379855131
 //link https://todolist2019-e565.restdb.io/rest/addtaskform
 
-const startBtn = document.querySelector(".startBtn");
 const addForm = document.querySelector("form#addForm");
 const addTaskBtn = document.querySelector(".addTaskBtn");
 const editForm = document.querySelector("form#editForm");
 const modal = document.querySelector(".modal");
+const loader = document.querySelector(".loader");
 
-startBtn.addEventListener("click", closeStartScreen);
+document.addEventListener("DOMContentLoaded", function() {
+  get();
+});
 
 addForm.addEventListener("submit", e => {
     e.preventDefault();
@@ -33,8 +35,6 @@ modal.querySelector(".cancelEditing").addEventListener("click", () => {
     document.querySelector(".taskOgName").textContent = "";
     editForm.reset();
 })
-
-get();
 
 function get() {
   fetch("https://todolist2019-e565.restdb.io/rest/addtaskform", {
